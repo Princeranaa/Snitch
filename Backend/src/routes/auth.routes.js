@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { registerValidator } from "../validator/auth.validator.js";
-import { register } from "../Controllers/auth.controller.js";
+import { loginValidator, registerValidator } from "../validator/auth.validator.js";
+import { login, register } from "../Controllers/auth.controller.js";
 const router = Router();
 
 /**
@@ -11,5 +11,6 @@ const router = Router();
  * role
  */
 router.post("/register", registerValidator, register);
+router.post("/login", loginValidator, login);
 
 export default router;
