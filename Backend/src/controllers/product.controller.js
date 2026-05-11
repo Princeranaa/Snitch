@@ -38,3 +38,19 @@ export const createproduct = async (req, res) => {
     return res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const getSellerProducts = async (req, res) => {
+  const seller = req.user;
+  try {
+    const products = await ProductModel.find({ seller: seller._id }).select("-__v");
+
+    res.status(200).json({
+      message: "seller products fetched successfully",
+      success: true,
+      products,
+    });
+
+  } catch (error) {
+    res.status(500).json({ message: "internal server error" });
+  }
+};
