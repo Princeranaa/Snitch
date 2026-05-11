@@ -13,9 +13,14 @@ if (!process.env.JWT_SECRET) {
   throw new Error("Please provide JWT_SECRET in .env file");
 }
 
+if (!process.env.PRIVATE_KEY) {
+  throw new Error("Please provide PRIVATE_KEY in .env file");
+}
+
 export const config = {
   MONGODB_URI: process.env.MONGODB_URI,
   PORT: process.env.PORT,
   JWT_SECRET: process.env.JWT_SECRET,
   CORS_ORIGIN: process.env.CORS_ORIGIN,
+  PRIVATE_KEY: process.env.PRIVATE_KEY,
 };

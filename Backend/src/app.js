@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import { config } from "./config/config.js";
 
 import authRoutes from "./routes/auth.routes.js";
+import productRoutes from "./routes/product.routes.js";
 
 const app = express();
 
@@ -24,6 +25,7 @@ app.use(cookieParser());
 
 // Routes
 app.use("/api/auth", authRoutes);
+app.use("/", productRoutes);
 
 app.use("/", (req, res) => {
   res.send("Hello from Snitch");
