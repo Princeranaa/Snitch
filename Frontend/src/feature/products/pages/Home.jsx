@@ -3,10 +3,12 @@ import { useSelector } from "react-redux";
 import { Package, ShoppingBag, IndianRupee } from "lucide-react";
 import { useProduct } from "../hooks/useProduct";
 import bgImage from "../../../assets/Snitch.png"; // change path
+import { useNavigate } from "react-router";
 
 function Home() {
   const products = useSelector((state) => state.product.products);
   const { handleGetAllProduct } = useProduct();
+  const navigate = useNavigate();
 
   useEffect(() => {
     handleGetAllProduct();
@@ -45,8 +47,7 @@ function Home() {
           </h3>
 
           <h2 className="mt-2 font-['Playfair_Display'] text-4xl font-bold text-white md:text-5xl">
-            Explore Our{" "}
-            <span className="italic text-amber-400">Products</span>
+            Explore Our <span className="italic text-amber-400">Products</span>
           </h2>
         </div>
 
@@ -69,6 +70,7 @@ function Home() {
 
               return (
                 <div
+                  onClick={() => navigate(`/products/${product._id}`)}
                   key={product._id}
                   className="group relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/5 p-4 shadow-2xl backdrop-blur-2xl transition-all duration-500 hover:-translate-y-2 hover:border-amber-400/40 hover:bg-white/10"
                 >
