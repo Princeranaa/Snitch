@@ -12,6 +12,7 @@ export const createProduct = async (formData) => {
 
 export const getsellerProduct = async () => {
   const response = await productAPi.get("/products/seller")
+  console.log("response", response)
   return response.data;
 };
 

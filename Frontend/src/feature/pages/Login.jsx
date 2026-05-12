@@ -28,12 +28,16 @@ const Login = () => {
     e.preventDefault();
     try {
       setLoading(true);
-      await handleLogin({
+      const user = await handleLogin({
         email: formData.email,
         password: formData.password,
       });
+      if (user.role === "buyer") {
+        navigate("/");
+      } else if (user.role === "seller") {
+        navigate("/seller/dasboard");
+      }
       setFormData({ email: "", password: "" });
-      navigate("/");
     } catch (error) {
       console.log("Login error:", error);
     } finally {
