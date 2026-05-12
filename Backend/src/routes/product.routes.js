@@ -1,7 +1,7 @@
 import { Router } from "express";
 const router = Router();
 import { authMiddleware } from "../middlewares/auth.middleware.js"
-import { createproduct, getSellerProducts } from "../controllers/product.controller.js";
+import { createproduct, getSellerProducts, getAllProducts } from "../controllers/product.controller.js";
 import { upload } from "../middlewares/multer.js";
 import { createProductValidator } from "../validator/product.validator.js";
 
@@ -18,5 +18,12 @@ router.post("/create/products", authMiddleware, upload.array("images", 7), creat
  * @access private 
  */
 router.get("/products/seller", authMiddleware, getSellerProducts)
+
+/*** 
+ * @route Get /products
+ * @description get all products
+ * @access public 
+ */
+router.get("/products", getAllProducts)
 
 export default router;

@@ -42,15 +42,26 @@ export const createproduct = async (req, res) => {
 export const getSellerProducts = async (req, res) => {
   const seller = req.user;
   try {
-    const products = await ProductModel.find({ seller: seller._id }).select("-__v");
+    const products = await ProductModel.find({ seller: seller._id }).select(
+      "-__v",
+    );
 
     res.status(200).json({
       message: "seller products fetched successfully",
       success: true,
       products,
     });
-
   } catch (error) {
     res.status(500).json({ message: "internal server error" });
   }
+};
+
+export const getAllProducts = async (req, res) => {
+  const products = await ProductModel.find();
+
+  res.status(200).json({
+    message: "products fetched successfully",
+    success: true,
+    products,
+  });
 };
