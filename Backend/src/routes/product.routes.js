@@ -10,7 +10,7 @@ import { createProductValidator } from "../validator/product.validator.js";
  * @description create a new product
  * @access private (seller only)
 */
-router.post("/create/products", authMiddleware, createProductValidator, upload.array("images", 7), createproduct)
+router.post("/create/products", authMiddleware, upload.array("images", 7), createProductValidator, createproduct)
 
 /**
  * @route Get /products/seller
