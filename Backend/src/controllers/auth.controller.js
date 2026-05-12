@@ -57,3 +57,25 @@ export const login = async (req, res) => {
     });
   }
 };
+
+export const getMe = async (req, res) => {
+  try {
+    const user = req.user;
+    return res.status(200).json({
+      message: "User fetched successfully",
+      success: true,
+      user: {
+        _id: user._id,
+        email: user.email,
+        fullname: user.fullname,
+        contact: user.contact,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      sucess: false,
+      message: "failed to fetch user",
+    });
+  }
+};
