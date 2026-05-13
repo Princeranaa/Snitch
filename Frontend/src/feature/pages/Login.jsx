@@ -35,7 +35,7 @@ const Login = () => {
       if (user.role === "buyer") {
         navigate("/");
       } else if (user.role === "seller") {
-        navigate("/seller/dasboard");
+        navigate("/seller/dashboard");
       }
       setFormData({ email: "", password: "" });
     } catch (error) {

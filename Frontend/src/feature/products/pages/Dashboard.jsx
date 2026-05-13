@@ -138,6 +138,7 @@ function Dashboard() {
           {products && products.length > 0 ? (
             products.map((product) => (
               <div
+              onClick={()=>navigate(`/seller/product/${product._id}`)}
                 key={product._id}
                 className="group relative flex flex-col overflow-hidden rounded-[1.5rem] border border-white/10 bg-white/5 shadow-xl backdrop-blur-xl transition-all hover:border-amber-400/30"
               >

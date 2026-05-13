@@ -68,7 +68,7 @@ export const getAllProducts = async (req, res) => {
 
 export const getProductDetails = async (req, res) => {
   const { id } = req.params;
-  const product = await ProductModel.findById(id)
+  const product = await ProductModel.findById(id);
 
   if (!product) {
     return res
@@ -81,4 +81,73 @@ export const getProductDetails = async (req, res) => {
     success: true,
     product,
   });
+};
+
+export const addVariant = async (req, res) => {
+  try {
+    const productId = req.params.productId;
+
+    const product = await ProductModel.findOne({
+      _id: productId,
+      seller: req.user._id,
+    });
+
+    if (!product) {
+      return res.status(404).json({
+        message: "Product not found",
+        success: false,
+      });
+    }
+
+    const files = req.files || [];
+    const images = [];
+
+    if (files.length !== 0) {
+      const uploadedImages = await Promise.all(
+        files.map(async (file) => {
+          const imageUrl = await uploadFile(
+            file.buffer,
+            file.originalname,
+            "Snitch/products",
+          );
+
+          return {
+            url: imageUrl,
+          };
+        }),
+      );
+
+      images.push(...uploadedImages);
+    }
+
+    const price = req.body.priceAmount;
+    const stock = req.body.stock;
+    const attributes = JSON.parse(req.body.attributes || "{}");
+
+    product.variants.push({
+      images,
+      price: {
+        amount: Number(price) || product.price.amount,
+        currency: req.body.priceCurrency || product.price.currency,
+      },
+      stock: Number(stock) || 0,
+      attributes,
+    });
+
+    await product.save();
+
+    return res.status(200).json({
+      message: "Product variant added successfully",
+      success: true,
+      product,
+    });
+  } catch (error) {
+    console.error("Add variant error:", error);
+
+    return res.status(500).json({
+      message: "Failed to add variant",
+      success: false,
+      error: error.message,
+    });
+  }
 };

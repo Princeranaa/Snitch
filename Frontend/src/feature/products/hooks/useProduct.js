@@ -1,4 +1,5 @@
 import {
+  addProductVariant,
   createProduct,
   getAllProducts,
   getProductDetails,
@@ -48,10 +49,16 @@ export const useProduct = () => {
     }
   }
 
+  async function handleAddProductVariant(productId, newProductVariant) {
+    const data = await addProductVariant(productId, newProductVariant);
+    return data;
+  }
+
   return {
     handleCreateProduct,
     handleGetProduct,
     handleGetAllProduct,
     handleGetProductDetails,
+    handleAddProductVariant,
   };
 };
