@@ -99,7 +99,14 @@ export const addVariant = async (req, res) => {
       });
     }
 
+    console.log("CONTENT TYPE:", req.headers["content-type"]);
+    console.log("REQ BODY:", req.body);
+    console.log("REQ FILES:", req.files);
+
     const files = req.files || [];
+    console.log("REQ BODY:", req.body);
+    console.log("REQ FILES:", req.files);
+
     const images = [];
 
     if (files.length !== 0) {

@@ -1,7 +1,7 @@
 import { ProductModel } from "../models/Product.model.js";
 
-export const stockVariant = (productId, variantId)=> {
-  const product = ProductModel.findOne({
+export const stockVariant = async (productId, variantId)=> {
+  const product = await ProductModel.findOne({
     _id: productId,
     "variants._id": variantId
   })
