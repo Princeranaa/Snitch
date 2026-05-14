@@ -13,6 +13,7 @@ import {
   Tag,
   MapPin,
 } from "lucide-react";
+import { useCart } from "../../Cart/hooks/useCart";
 
 function Productdetails() {
   const { productId } = useParams();
@@ -24,6 +25,7 @@ function Productdetails() {
   const [selectedAttributes, setSelectedAttributes] = useState({});
 
   const { handleGetProductDetails } = useProduct();
+  const { handleAdditem } = useCart();
 
   const fetchProductDetails = async () => {
     try {
@@ -44,11 +46,12 @@ function Productdetails() {
     if (productId) fetchProductDetails();
   }, [productId]);
 
-  const selectedVariant = product?.variants?.find((v) =>
-    Object.entries(selectedAttributes).every(
-      ([key, value]) => v.attributes?.[key] === value,
-    ),
-  );
+  const selectedVariant =
+    product?.variants?.find((v) =>
+      Object.entries(selectedAttributes).every(
+        ([key, value]) => v.attributes?.[key] === value,
+      ),
+    ) || product?.variants?.[0];
 
   const displayPrice = selectedVariant?.price?.amount
     ? selectedVariant.price
@@ -159,7 +162,25 @@ function Productdetails() {
 
             {/* Buttons */}
             <div className="mt-6 grid grid-cols-2 gap-3">
-              <button className="flex items-center justify-center gap-2 rounded-md bg-[#492027] px-3 py-3 text-xs font-black uppercase tracking-wide text-white transition hover:bg-[#5b2932]">
+              <button
+                
+                onClick={() => {
+                  if (!selectedVariant?._id) {
+                    console.log("No variant selected", {
+                      productId: product._id,
+                      variants: product.variants,
+                      selectedAttributes,
+                    });
+                    return;
+                  }
+
+                  handleAdditem({
+                    productId: product._id,
+                    variantId: selectedVariant._id,
+                  });
+                }}
+                className="flex items-center justify-center gap-2 rounded-md bg-[#492027] px-3 py-3 text-xs font-black uppercase tracking-wide text-white transition hover:bg-[#5b2932] disabled:cursor-not-allowed disabled:opacity-50"
+              >
                 <ShoppingCart size={17} />
                 Add to Cart
               </button>
@@ -258,7 +279,6 @@ function Productdetails() {
                 </p>
               )}
             </div>
-
 
             <div className="mt-4 grid gap-2 sm:grid-cols-3">
               <div className="rounded-md border border-[#252525] bg-[#151515] p-3">

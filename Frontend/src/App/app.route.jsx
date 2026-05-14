@@ -7,6 +7,7 @@ import Protected from "../feature/auth/components/Protected";
 import Home from "../feature/products/pages/Home";
 import Productdetails from "../feature/products/pages/Productdetails";
 import SellerProductDetails from "../feature/products/pages/SellerProductDetails";
+ 
 
 export const routes = createBrowserRouter([
   {
@@ -37,6 +38,7 @@ export const routes = createBrowserRouter([
     path: "/seller/product/:productId",
     element: <Protected role="seller"><SellerProductDetails/></Protected>,
   },
+   
   {
     path: "*",
     element: <h1>Page Not Found</h1>,
