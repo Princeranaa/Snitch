@@ -163,7 +163,7 @@ function Productdetails() {
             {/* Buttons */}
             <div className="mt-6 grid grid-cols-2 gap-3">
               <button
-                
+                // disabled={!selectedVariant?._id || displayStock <= 0}
                 onClick={() => {
                   if (!selectedVariant?._id) {
                     console.log("No variant selected", {

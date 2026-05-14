@@ -16,3 +16,8 @@ export const addItem = async ({ productId, variantId, quantity = 1 }) => {
   );
   return response.data;
 };
+
+export const getItems = async () => {
+  const response = await cartApiInstance.get("/");
+  return response.data;
+};
