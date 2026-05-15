@@ -21,3 +21,11 @@ export const getItems = async () => {
   const response = await cartApiInstance.get("/");
   return response.data;
 };
+
+export const incrementCart = async ({ productId, variantId }) => {
+  const response = await cartApiInstance.patch(
+    `/quantity/increment/${productId}/${variantId}`,
+  );
+  console.log("response", response.data);
+  return response.data;
+};

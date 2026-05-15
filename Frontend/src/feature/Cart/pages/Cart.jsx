@@ -14,7 +14,7 @@ import {
 
 function Cart() {
   const cartItems = useSelector((state) => state.cart.items);
-  const { handleGetItems } = useCart();
+  const { handleGetItems, handleIncrementCartAPI } = useCart();
 
   useEffect(() => {
     handleGetItems();
@@ -22,7 +22,7 @@ function Cart() {
 
   const getVariantDetails = (product, variantId) => {
     return product?.variants?.find(
-      (variant) => variant._id?.toString() === variantId?.toString()
+      (variant) => variant._id?.toString() === variantId?.toString(),
     );
   };
 
@@ -185,7 +185,15 @@ function Cart() {
                             {item.quantity}
                           </span>
 
-                          <button className="flex h-9 w-9 items-center justify-center text-gray-500 transition hover:bg-gray-200 hover:text-black">
+                          <button
+                            onClick={() =>
+                              handleIncrementCartAPI({
+                                productId: product._id,
+                                variantId: variant._id,
+                              })
+                            }
+                            className="flex h-9 w-9 items-center justify-center text-gray-500 transition hover:bg-gray-200 hover:text-black"
+                          >
                             <Plus size={15} />
                           </button>
                         </div>
@@ -216,7 +224,9 @@ function Cart() {
             <div className="mt-5 space-y-4">
               <div className="flex items-center justify-between text-sm">
                 <span className="text-gray-500">Subtotal</span>
-                <span className="font-semibold text-gray-900">₹ {subtotal}</span>
+                <span className="font-semibold text-gray-900">
+                  ₹ {subtotal}
+                </span>
               </div>
 
               <div className="flex items-center justify-between text-sm">
@@ -247,9 +257,7 @@ function Cart() {
             <div className="mt-6 rounded-2xl bg-gray-50 p-4">
               <div className="mb-3 flex items-center gap-2">
                 <Tag size={18} className="text-gray-600" />
-                <p className="text-sm font-bold text-gray-800">
-                  Apply Coupon
-                </p>
+                <p className="text-sm font-bold text-gray-800">Apply Coupon</p>
               </div>
 
               <div className="flex gap-2">
@@ -279,9 +287,7 @@ function Cart() {
                   <p className="text-sm font-bold text-gray-800">
                     Free Delivery
                   </p>
-                  <p className="text-xs text-gray-500">
-                    On all prepaid orders
-                  </p>
+                  <p className="text-xs text-gray-500">On all prepaid orders</p>
                 </div>
               </div>
 
