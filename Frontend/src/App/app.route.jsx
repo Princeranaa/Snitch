@@ -8,42 +8,65 @@ import Home from "../feature/products/pages/Home";
 import Productdetails from "../feature/products/pages/Productdetails";
 import SellerProductDetails from "../feature/products/pages/SellerProductDetails";
 import Cart from "../feature/Cart/pages/Cart";
+import Layout from "../feature/Components/Layout";
 
 export const routes = createBrowserRouter([
   {
     path: "/",
-    element: <Home/>,
-  },
-  {
-    path: "/register",
-    element: <Register />,
-  },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/products/:productId",
-    element: <Productdetails />,
-  },
-  {
-    path: "/seller/create-product",
-    element: <Protected role="seller"><CreateProduct /></Protected>,
-  },
-  {
-    path: "/seller/dashboard",
-    element: <Protected role="seller"><Dashboard /></Protected>,
-  },
-  {
-    path: "/seller/product/:productId",
-    element: <Protected role="seller"><SellerProductDetails/></Protected>,
-  },
-  {
-    path: "/cart",
-    element: <Protected><Cart/></Protected>,
-  },
-  {
-    path: "*",
-    element: <h1>Page Not Found</h1>,
+    element: <Layout />,
+    children: [
+      {
+        index: true,
+        element: <Home />,
+      },
+      {
+        path: "register",
+        element: <Register />,
+      },
+      {
+        path: "login",
+        element: <Login />,
+      },
+      {
+        path: "products/:productId",
+        element: <Productdetails />,
+      },
+      {
+        path: "seller/create-product",
+        element: (
+          <Protected role="seller">
+            <CreateProduct />
+          </Protected>
+        ),
+      },
+      {
+        path: "seller/dashboard",
+        element: (
+          <Protected role="seller">
+            <Dashboard />
+          </Protected>
+        ),
+      },
+      {
+        path: "seller/product/:productId",
+        element: (
+          <Protected role="seller">
+            <SellerProductDetails />
+          </Protected>
+        ),
+      },
+      {
+        path: "cart",
+        element: (
+          <Protected>
+            <Cart />
+          </Protected>
+        ),
+      },
+      {
+        path: "*",
+        element: <h1>Page Not Found</h1>,
+      },
+    ],
   },
 ]);

@@ -34,10 +34,12 @@ export const addProductVariant = async (productId, newProductVariant) => {
   });
 
   formData.append("stock", newProductVariant.stock);
-  formData.append("priceamount", newProductVariant.price.amount);
-  formData.append("priceCurrency", newProductVariant.price.currency);
+  formData.append("priceamount", newProductVariant.priceAmount);
+  formData.append("priceCurrency", newProductVariant.priceCurrency);
   formData.append("attributes", JSON.stringify(newProductVariant.attributes));
   
   const response = await productAPi.post(`/${productId}/variants`, formData);
   return response.data;
 };
+
+  

@@ -146,24 +146,22 @@ function AddVariantForm({ productId, onSuccess }) {
 
   const [formData, setFormData] = useState({
     images: [],
-    stock: 0,
-    price: {
-      amount: "",
-      currency: "INR",
-    },
+    stock: "",
+    priceAmount: "",
+    priceCurrency: "INR",
     attributes: {},
   });
 
   const { handleAddProductVariant } = useProduct();
 
   const handleAddAttr = () => {
-    if (!attrKey || !attrValue) return;
+    if (!attrKey.trim() || !attrValue.trim()) return;
 
     setFormData((prev) => ({
       ...prev,
       attributes: {
         ...prev.attributes,
-        [attrKey]: attrValue,
+        [attrKey.trim()]: attrValue.trim(),
       },
     }));
 
@@ -186,17 +184,15 @@ function AddVariantForm({ productId, onSuccess }) {
     setAttrValue("");
     setFormData({
       images: [],
-      stock: 0,
-      price: {
-        amount: "",
-        currency: "INR",
-      },
+      stock: "",
+      priceAmount: "",
+      priceCurrency: "INR",
       attributes: {},
     });
   };
 
   const handleImageUpload = (e) => {
-    const selectedFiles = Array.from(e.target.files);
+    const selectedFiles = Array.from(e.target.files || []);
 
     const imageObjects = selectedFiles.map((file) => ({
       file,
@@ -217,11 +213,7 @@ function AddVariantForm({ productId, onSuccess }) {
     try {
       setLoading(true);
 
-      console.log("Variant Payload:", formData);
-
       const updatedProduct = await handleAddProductVariant(productId, formData);
-
-      console.log("Updated Product:", updatedProduct);
 
       if (updatedProduct) {
         onSuccess(updatedProduct?.product || updatedProduct);
@@ -246,7 +238,7 @@ function AddVariantForm({ productId, onSuccess }) {
         </h2>
 
         <p className="mx-auto mt-3 max-w-xl text-sm leading-7 text-gray-500">
-          Add stock, pricing, attributes and images for this product variant.
+          Add variant data using the same structure as Postman form-data.
         </p>
       </div>
 
@@ -262,6 +254,7 @@ function AddVariantForm({ productId, onSuccess }) {
             onChange={handleImageUpload}
             className="hidden"
             id="variant-images"
+            accept="image/png,image/jpeg,image/jpg,image/webp"
           />
 
           <label
@@ -280,33 +273,61 @@ function AddVariantForm({ productId, onSuccess }) {
               PNG, JPG or WEBP supported
             </span>
           </label>
+
+          {formData.images.length > 0 && (
+            <div className="mt-4 grid grid-cols-3 gap-3 sm:grid-cols-4">
+              {formData.images.map((image, index) => (
+                <div
+                  key={index}
+                  className="relative aspect-square overflow-hidden rounded-xl border border-white/10 bg-white/[0.03]"
+                >
+                  <img
+                    src={image.previewUrl}
+                    alt="Variant preview"
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <InputBox
+            label="Price Amount"
+            icon={DollarSign}
+            value={formData.priceAmount}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                priceAmount: e.target.value,
+              })
+            }
+            placeholder="200"
+          />
+
+          <SelectBox
+            label="Currency"
+            value={formData.priceCurrency}
+            onChange={(e) =>
+              setFormData({
+                ...formData,
+                priceCurrency: e.target.value,
+              })
+            }
+          />
+
           <InputBox
             label="Stock"
             icon={Package}
             value={formData.stock}
             onChange={(e) =>
-              setFormData({ ...formData, stock: e.target.value })
-            }
-            placeholder="0"
-          />
-
-          <InputBox
-            label="Price"
-            icon={DollarSign}
-            value={formData.price.amount}
-            onChange={(e) =>
               setFormData({
                 ...formData,
-                price: {
-                  ...formData.price,
-                  amount: e.target.value,
-                },
+                stock: e.target.value,
               })
             }
-            placeholder="1000"
+            placeholder="10"
           />
         </div>
 
@@ -320,7 +341,7 @@ function AddVariantForm({ productId, onSuccess }) {
               type="text"
               value={attrKey}
               onChange={(e) => setAttrKey(e.target.value)}
-              placeholder="Color"
+              placeholder="size"
               className="h-12 rounded-xl border border-white/10 bg-white/[0.03] px-4 text-sm text-white outline-none transition-colors placeholder:text-gray-700 focus:border-amber-400/40"
             />
 
@@ -328,7 +349,7 @@ function AddVariantForm({ productId, onSuccess }) {
               type="text"
               value={attrValue}
               onChange={(e) => setAttrValue(e.target.value)}
-              placeholder="Black"
+              placeholder="color"
               className="h-12 rounded-xl border border-white/10 bg-white/[0.03] px-4 text-sm text-white outline-none transition-colors placeholder:text-gray-700 focus:border-amber-400/40"
             />
 
@@ -399,6 +420,30 @@ function InputBox({ label, icon: Icon, value, onChange, placeholder }) {
           className="h-12 w-full rounded-xl border border-white/10 bg-white/[0.03] py-3 pl-11 pr-4 text-sm text-white outline-none transition-colors placeholder:text-gray-700 focus:border-amber-400/40"
         />
       </div>
+    </div>
+  );
+}
+
+function SelectBox({ label, value, onChange }) {
+  return (
+    <div>
+      <label className="mb-2 block text-xs font-bold uppercase tracking-widest text-gray-500">
+        {label}
+      </label>
+
+      <select
+        value={value}
+        onChange={onChange}
+        required
+        className="h-12 w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 text-sm text-white outline-none transition-colors focus:border-amber-400/40"
+      >
+        <option className="bg-[#111111]" value="INR">
+          INR
+        </option>
+        <option className="bg-[#111111]" value="USD">
+          USD
+        </option>
+      </select>
     </div>
   );
 }

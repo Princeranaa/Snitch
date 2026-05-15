@@ -4,6 +4,7 @@ import { routes } from "./app.route";
 import { useSelector } from "react-redux";
 import { useAuth } from "../feature/hooks/useAuth";
 import { useEffect } from "react";
+import Navbar from "../feature/Components/Navbar";
 
 function App() {
   const { handlegetMe } = useAuth();
